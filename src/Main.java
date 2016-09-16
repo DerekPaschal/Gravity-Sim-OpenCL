@@ -17,37 +17,39 @@ public class Main {
 		
 		ParticleField.ConstructParticleField(ParticleCountChangeLock);
 		
+		//Simulation Parameters
 		float TimeStep = 1.0f;
-		int TimesToRun = (int) Math.round(1.0f / TimeStep);
+		float SecsPerFrame = 1.0f * TimeStep;
+		float SecsToSim = 1000.0f * SecsPerFrame;
+		int ParticleCount = (int) Math.pow(70, 2);
 		
-		ParticleField.populate();
 		
-		long new_frame_time = 0, wait_time = 0;
+		ParticleField.populate(ParticleCount);
+		//long new_frame_time = 0, wait_time = 0;
 		
 		long benchStartTime = System.nanoTime();
-		
-		int secsToSim = 1000;
-		for (int p = 0; p < secsToSim; p++)
+
+		for (float p = 0.0f; p < SecsToSim; p += SecsPerFrame)
 		{
 			//Begin timer
 			//new_frame_time = System.nanoTime();
 			
-			VisualLock.compareAndSet(0, 1);
-			
+			//VisualLock.compareAndSet(0, 1);
 			partView.PaintParticleView(ParticleArrays.n,ParticleArrays.X, ParticleArrays.Y, ParticleArrays.Size, ParticleArrays.Red, ParticleArrays.Green,ParticleArrays.Blue);
 			
-			for (int i = 0; i < TimesToRun; i++)
+			for (float i = 0.0f; i < SecsPerFrame; i += TimeStep)
 			{
 				ParticleField.run(TimeStep);
 			}
 			
-			synchronized(VisualLock)
+			
+			/*synchronized(VisualLock)
 			{
 				while(VisualLock.get() == 1)
 				{
 					VisualLock.wait();
 				}
-			}
+			}*/
 			
 			//End Timer
 			//wait_time =(long)(17000000 - (System.nanoTime() - new_frame_time));//17000000
@@ -63,12 +65,14 @@ public class Main {
 		
 		long benchEndTime = System.nanoTime();
 		
-		long duration = (long) ((benchEndTime - benchStartTime)/(1e9f));
+		float duration = (float)((int)((benchEndTime - benchStartTime)/(1e8f))/10.0);
 		
-		System.out.println("Duration: " + duration + " S");
-		System.out.println("FPS: " + secsToSim/duration);
-		System.out.println("TimeStep: "+ TimeStep);
-		System.out.println("Particles: " + ParticleArrays.n);
+		System.out.println("Duration of Simulation: \t\t" + duration + " S");
+		//System.out.println("Simulated Seconds: \t\t" + SecsToSim + " S");
+		System.out.println("Simulated Seconds per Second: \t" + (Math.round(SecsToSim*10.0/duration)/10.0));
+		System.out.println("Frames Per Second: \t\t" + (Math.round((SecsToSim/SecsPerFrame)*10.0/duration)/10.0) + " FPS");
+		//System.out.println("TimeStep: \t\t\t"+ ParticleArrays.TimeStep[0]);
+		System.out.println("Particles: \t\t\t" + ParticleArrays.n);
 		System.exit(0);
 	}
 	

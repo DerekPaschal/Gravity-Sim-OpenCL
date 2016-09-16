@@ -18,7 +18,7 @@ public class ParticleField
 	public static void ConstructParticleField(AtomicInteger ParticleCountChangeLock) throws Exception
 	{
 		ParticleField.ParticleCountChangeLock = ParticleCountChangeLock;
-		String programsource = new String(Files.readAllBytes(Paths.get("kernels/Test.cl")), StandardCharsets.UTF_8);
+		String programsource = new String(Files.readAllBytes(Paths.get("kernels/Test2.cl")), StandardCharsets.UTF_8);
 		openCLControl = new OpenCLDeviceControl();
 		OpenCLDevice device = null;
 		for(OpenCLDevice tempdevice : openCLControl.GetOpenCLDevices())
@@ -36,18 +36,17 @@ public class ParticleField
 		}
 		openCLControl.SetOpenCLDevice(device);
 		
-		ParticleField.kernel = openCLControl.CreateOpenCLKernel(programsource,"Kernel");
+		ParticleField.kernel = openCLControl.CreateOpenCLKernel(programsource,"Test");
 	}
 	
 	
-	public static void populate() throws Exception
+	public static void populate(int ParticleCount) throws Exception
 	{
-		int ApproxParticleCount = (int) Math.pow(100, 2);
-		int StartX = 200/10, StartY = 0/10;
+		int ApproxParticleCount = ParticleCount;
+		int StartX = 10/10, StartY = 10/10;
 		
 		int PartsPerSide = (int) Math.round(Math.sqrt(ApproxParticleCount));
 		int iEnd = StartX + PartsPerSide, jEnd = StartY + PartsPerSide;
-		
 		
 		LinkedList<Particle> partsToAdd = new LinkedList<Particle>();
 		
@@ -55,7 +54,7 @@ public class ParticleField
 		{
 			for (int j = StartY; j < jEnd; j++)
 			{
-				partsToAdd.add(new Particle(i*10,j*10,0,0,0,0,(float) 0.05,2,0,0,false,255,255,255));
+				partsToAdd.add(new Particle(i*10,j*10,0,0,(float) 0.05,4,0,0,false,255,255,255));
 			}
 		}
 		ParticleArrays.AddParticles(partsToAdd);
@@ -73,11 +72,11 @@ public class ParticleField
 				{				
 					ParticleArrays.velX[j] += ParticleArrays.accX[j] * TimeStep;
 					ParticleArrays.velY[j] += ParticleArrays.accY[j] * TimeStep;
-					ParticleArrays.velZ[j] += ParticleArrays.accZ[j] * TimeStep;
+					//ParticleArrays.velZ[j] += ParticleArrays.accZ[j] * TimeStep;
 					
 					ParticleArrays.X[j] += ParticleArrays.velX[j] * TimeStep;
 					ParticleArrays.Y[j] += ParticleArrays.velY[j] * TimeStep;
-					ParticleArrays.Z[j] += ParticleArrays.velZ[j] * TimeStep;
+					//ParticleArrays.Z[j] += ParticleArrays.velZ[j] * TimeStep;
 				}
 			}
 		}

@@ -20,14 +20,16 @@ public class ParticleView extends JFrame
 	{
 		this.setTitle(WindowTitle);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		//this.setUndecorated(true);
 		this.setVisible(true);
-		this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 		this.windowX = this.getWidth();
 		this.windowY = this.getHeight();
 		
 		this.panel = new ParticlePanel(32,32,32, this.windowX, this.windowY, VisualLock);
 		this.getContentPane().add(this.panel);
+		this.setIgnoreRepaint(true);
 	}
 	
 	public void PaintParticleView(int n, float[]X, float[]Y, float[]Size, float[]R, float[]G, float[]B)
@@ -39,7 +41,7 @@ public class ParticleView extends JFrame
 		panel.R = R;
 		panel.G = G;
 		panel.B = B;
-		this.repaint();
+		this.repaint(0);
 	}
 }
 
@@ -48,9 +50,7 @@ public class ParticleView extends JFrame
 class ParticlePanel extends JPanel
 {
 	AtomicInteger VisualLock;
-	int bgR;
-	int bgG;
-	int bgB;
+	Color bgColor;
 	int windowX;
 	int windowY;
 	
@@ -66,36 +66,37 @@ class ParticlePanel extends JPanel
 	protected ParticlePanel(int bgR, int bgG, int bgB, int windowX, int windowY, AtomicInteger VisualLock)
 	{
 		this.VisualLock = VisualLock;
-		this.bgR = Math.max(bgR,0);
-		this.bgG = Math.max(bgG,0);
-		this.bgB = Math.max(bgB,0);
-		
+		this.bgColor = new Color(bgR, bgG, bgB);
 		this.windowX = Math.max(windowX,0);
 		this.windowY = Math.max(windowY,0);
+		this.setIgnoreRepaint(true);
 	}
 	
 	public void paintComponent(Graphics g) 
 	{
-		g.setColor(new Color(bgR,bgG,bgB));
-		g.fillRect(0,0,this.windowX,this.windowY);
-		
 		Graphics2D g2 = (Graphics2D)g;
+		g2.setColor(this.bgColor);
+		g2.fillRect(0,0,this.windowX,this.windowY);
+		
+		
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		
 		int draw_diameter = 0;
-		
+		float currentSize = 0;
 		synchronized (VisualLock)
 		{
 			for (int i = 0; i < n; i++)
 			{
+				currentSize = Size[i];
 				g2.setColor(new Color((int)R[i],(int)G[i],(int)B[i]));
-				draw_diameter = (int)(Size[i] *2);
-				g2.fillOval((int)(X[i] - Size[i]), (int)(Y[i] - Size[i]), draw_diameter, draw_diameter);				
+				draw_diameter = (int)(currentSize *2);
+				g2.fillOval((int)(X[i] - currentSize), (int)(Y[i] - currentSize), draw_diameter, draw_diameter);
+				
 			}
 		
-			VisualLock.compareAndSet(1, 0);
-			VisualLock.notifyAll();
+			//VisualLock.compareAndSet(1, 0);
+			//VisualLock.notifyAll();
 		}
 		
 	}
