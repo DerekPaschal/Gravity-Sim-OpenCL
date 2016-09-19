@@ -43,7 +43,7 @@ public class ParticleField
 	public static void populate(int ParticleCount) throws Exception
 	{
 		int ApproxParticleCount = ParticleCount;
-		int StartX = 10/10, StartY = 10/10;
+		int StartX = 400/10, StartY = 70/10;
 		
 		int PartsPerSide = (int) Math.round(Math.sqrt(ApproxParticleCount));
 		int iEnd = StartX + PartsPerSide, jEnd = StartY + PartsPerSide;
@@ -54,9 +54,11 @@ public class ParticleField
 		{
 			for (int j = StartY; j < jEnd; j++)
 			{
-				partsToAdd.add(new Particle(i*10,j*10,0,0,(float) 0.05,4,0,0,false,255,255,255));
+				partsToAdd.add(new Particle(i*10,j*10,0,0,0.1f,4,0,0,false,255,255,255));
 			}
 		}
+		partsToAdd.add(new Particle(0, 400, 1.0f, 0, 10.0f, 10,0,0,false,200,200,200));
+		//partsToAdd.add(new Particle(1300, 120, -3.0f, 0, 10.0f, 10,0,0,false,200,200,200));
 		ParticleArrays.AddParticles(partsToAdd);
 		
 	}

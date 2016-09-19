@@ -21,7 +21,7 @@ public class Main {
 		float TimeStep = 1.0f;
 		float SecsPerFrame = 1.0f * TimeStep;
 		float SecsToSim = 1000.0f * SecsPerFrame;
-		int ParticleCount = (int) Math.pow(70, 2);
+		int ParticleCount = (int) Math.pow(50, 2);
 		
 		
 		ParticleField.populate(ParticleCount);
@@ -34,7 +34,7 @@ public class Main {
 			//Begin timer
 			//new_frame_time = System.nanoTime();
 			
-			//VisualLock.compareAndSet(0, 1);
+			VisualLock.compareAndSet(0, 1);
 			partView.PaintParticleView(ParticleArrays.n,ParticleArrays.X, ParticleArrays.Y, ParticleArrays.Size, ParticleArrays.Red, ParticleArrays.Green,ParticleArrays.Blue);
 			
 			for (float i = 0.0f; i < SecsPerFrame; i += TimeStep)
@@ -43,13 +43,13 @@ public class Main {
 			}
 			
 			
-			/*synchronized(VisualLock)
+			synchronized(VisualLock)
 			{
 				while(VisualLock.get() == 1)
 				{
 					VisualLock.wait();
 				}
-			}*/
+			}
 			
 			//End Timer
 			//wait_time =(long)(17000000 - (System.nanoTime() - new_frame_time));//17000000

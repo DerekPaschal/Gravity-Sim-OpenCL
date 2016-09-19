@@ -52,7 +52,7 @@
 			
 			overlap = distMag - (size + S[i]);
 			
-			A += UnitVector * restitution * 0.5f * overlap;
+			A += (UnitVector * restitution * 0.05f * overlap) / mass;
 		}
 	}
 	

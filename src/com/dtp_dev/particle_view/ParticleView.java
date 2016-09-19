@@ -95,8 +95,8 @@ class ParticlePanel extends JPanel
 				
 			}
 		
-			//VisualLock.compareAndSet(1, 0);
-			//VisualLock.notifyAll();
+			VisualLock.compareAndSet(1, 0);
+			VisualLock.notifyAll();
 		}
 		
 	}

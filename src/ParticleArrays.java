@@ -69,7 +69,7 @@ public class ParticleArrays
 		//ParticleArrays.Z = AddToArray(ParticleArrays.Z,Z);
 		
 		ParticleArrays.velX = AddToArray(ParticleArrays.velX, velX);
-		ParticleArrays.velY = AddToArray(ParticleArrays.velY, velX);
+		ParticleArrays.velY = AddToArray(ParticleArrays.velY, velY);
 		//ParticleArrays.velZ = AddToArray(ParticleArrays.velZ, velX);
 		
 		ParticleArrays.accX = AddToArray(ParticleArrays.accX, 0.0f);
