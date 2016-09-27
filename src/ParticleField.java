@@ -42,23 +42,27 @@ public class ParticleField
 	
 	public static void populate(int ParticleCount) throws Exception
 	{
+		//float density = 1.0f;
+		int Spacing = 20;
 		int ApproxParticleCount = ParticleCount;
-		int StartX = 400/10, StartY = 70/10;
+		int StartX = 0/Spacing, StartY = 0/Spacing;
 		
 		int PartsPerSide = (int) Math.round(Math.sqrt(ApproxParticleCount));
 		int iEnd = StartX + PartsPerSide, jEnd = StartY + PartsPerSide;
 		
 		LinkedList<Particle> partsToAdd = new LinkedList<Particle>();
 		
+		//partsToAdd.add(new Particle(0 - 100, 300, 1.0f, 0, 50.0f, 40,0,0,false,200,200,200));
+		//partsToAdd.add(new Particle(0 -1300, 300, 0.5f, 0, 1.0f, 10,0,0,false,200,200,200));
+		//partsToAdd.add(new Particle(1300 + 1000, 300, -0.5f, 0, 1.0f, 10,0,0,false,200,200,200));
+				
 		for (int i = StartX; i < iEnd; i++)
 		{
 			for (int j = StartY; j < jEnd; j++)
 			{
-				partsToAdd.add(new Particle(i*10,j*10,0,0,0.1f,4,0,0,false,255,255,255));
+				partsToAdd.add(new Particle(i*Spacing,j*Spacing,0,0,(float)(Math.random() * 0.01) + 0.1f,4,0,0,false,255,255,255));
 			}
 		}
-		partsToAdd.add(new Particle(0, 400, 1.0f, 0, 10.0f, 10,0,0,false,200,200,200));
-		//partsToAdd.add(new Particle(1300, 120, -3.0f, 0, 10.0f, 10,0,0,false,200,200,200));
 		ParticleArrays.AddParticles(partsToAdd);
 		
 	}

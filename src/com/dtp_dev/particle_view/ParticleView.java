@@ -62,6 +62,7 @@ class ParticlePanel extends JPanel
 	float[] B;
 	
 	int n;
+	float scale = 1.0f;
 	
 	protected ParticlePanel(int bgR, int bgG, int bgB, int windowX, int windowY, AtomicInteger VisualLock)
 	{
@@ -88,10 +89,10 @@ class ParticlePanel extends JPanel
 		{
 			for (int i = 0; i < n; i++)
 			{
-				currentSize = Size[i];
+				currentSize = Size[i] * scale;
 				g2.setColor(new Color((int)R[i],(int)G[i],(int)B[i]));
-				draw_diameter = (int)(currentSize *2);
-				g2.fillOval((int)(X[i] - currentSize), (int)(Y[i] - currentSize), draw_diameter, draw_diameter);
+				draw_diameter = (int)(((currentSize) *2));
+				g2.fillOval((int)((X[i] - currentSize)*scale), (int)((Y[i] - currentSize)*scale), draw_diameter, draw_diameter);
 				
 			}
 		

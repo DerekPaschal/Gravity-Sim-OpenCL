@@ -10,7 +10,7 @@
 	float size = S[gid];
 	float mass = M[gid];
 	
-	float2 A;
+	float2 A = {0.0f,0.0f};
 	float2 P = {X[gid], Y[gid]};
 	
 	float2 PN;
@@ -18,10 +18,10 @@
 	float distMag;
 	float VectorG;
 	
-	float2 UnitVector;
-	float VelAlongNorm;
-	float restitution;
-	float overlap;
+	//float2 UnitVector;
+	//float VelAlongNorm;
+	//float restitution;
+	//float overlap;
 	
 	for (int i = 0; i < n; i++)
 	{		
@@ -31,31 +31,40 @@
 	
 		distMag = sqrt((dist.x*dist.x)  + (dist.y*dist.y));
 		
-		if (i == gid)
-		{
-			continue;
-		}
-		
-		if (distMag >= (size + S[i])/2.0f)
+		//Gravity
+		if (distMag >= (size + S[i]))
 		{
 			VectorG = M[i] / (distMag * distMag * distMag);
 			A += VectorG * dist;
 		}
 		
-		if (distMag < size + S[i])
+		//Repulsion Collision
+		/*if (distMag >= (size + S[i])/4.0f && distMag <= (size + S[i]))
 		{
 			UnitVector = dist / distMag;
 			
 			VelAlongNorm = ((Xv[i] - Xv[gid]) * UnitVector.x) + ((Yv[i] - Yv[gid]) * UnitVector.y);  
 			
-			restitution = (1.0f * (VelAlongNorm <= 0)) + (0.1f * (VelAlongNorm > 0));
+			restitution = (1.0f * (VelAlongNorm <= 0)) + (1.0f * (VelAlongNorm > 0));
 			
-			overlap = distMag - (size + S[i]);
+			overlap = (distMag - (size + S[i]));
 			
-			A += (UnitVector * restitution * 0.05f * overlap) / mass;
+			//VectorG = (restitution * 1 * overlap) / (distMag * distMag * distMag);
+			
+			//A += VectorG * UnitVector;
+			
+			//overlap = (3.14159f *  * (size + S[i] - (distMag * distMag))* (size + S[i] - (distMag * distMag)) * ((distMag * distMag) + (2 * distMag * S[i]) - (3 * S[i] * S[i]) + (2 * distMag * size) + (6 * S[i] * size) - (3 * size * size)))/ (12 * distMag);
+			//overlap = (1/(distMag*distMag)) * (-distMag + S[i] - size) * (-distMag - S[i] + size) * (- distMag + S[i] + size) * (distMag + S[i] + size);
+			
+			A += (UnitVector * restitution * 0.05 * overlap) / mass;
+		}*/
+		
+		//Collision friction
+		if (distMag < (size + S[i]) && distMag >= 1.0f)
+		{
+			
 		}
 	}
-	
 	Xa[gid] = A.x;
 	Ya[gid] = A.y;
 };

@@ -20,8 +20,8 @@ public class Main {
 		//Simulation Parameters
 		float TimeStep = 1.0f;
 		float SecsPerFrame = 1.0f * TimeStep;
-		float SecsToSim = 1000.0f * SecsPerFrame;
-		int ParticleCount = (int) Math.pow(50, 2);
+		float SecsToSim = 2000.0f * SecsPerFrame;
+		int ParticleCount = (int) Math.pow(60, 2);
 		
 		
 		ParticleField.populate(ParticleCount);
@@ -37,7 +37,7 @@ public class Main {
 			VisualLock.compareAndSet(0, 1);
 			partView.PaintParticleView(ParticleArrays.n,ParticleArrays.X, ParticleArrays.Y, ParticleArrays.Size, ParticleArrays.Red, ParticleArrays.Green,ParticleArrays.Blue);
 			
-			for (float i = 0.0f; i < SecsPerFrame; i += TimeStep)
+			for (float i = SecsPerFrame; i >= 0.0f; i =- TimeStep)
 			{
 				ParticleField.run(TimeStep);
 			}
