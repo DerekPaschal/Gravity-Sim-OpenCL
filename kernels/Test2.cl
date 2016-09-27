@@ -18,10 +18,10 @@
 	float distMag;
 	float VectorG;
 	
-	//float2 UnitVector;
-	//float VelAlongNorm;
-	//float restitution;
-	//float overlap;
+	float2 UnitVector;
+	float VelAlongNorm;
+	float restitution;
+	float overlap;
 	
 	for (int i = 0; i < n; i++)
 	{		
@@ -39,13 +39,13 @@
 		}
 		
 		//Repulsion Collision
-		/*if (distMag >= (size + S[i])/4.0f && distMag <= (size + S[i]))
+		if (distMag >= 1.0f && distMag <= (size + S[i]))
 		{
 			UnitVector = dist / distMag;
 			
 			VelAlongNorm = ((Xv[i] - Xv[gid]) * UnitVector.x) + ((Yv[i] - Yv[gid]) * UnitVector.y);  
 			
-			restitution = (1.0f * (VelAlongNorm <= 0)) + (1.0f * (VelAlongNorm > 0));
+			restitution = (1.0f * (VelAlongNorm <= 0)) + (0.7f * (VelAlongNorm > 0));
 			
 			overlap = (distMag - (size + S[i]));
 			
@@ -57,7 +57,7 @@
 			//overlap = (1/(distMag*distMag)) * (-distMag + S[i] - size) * (-distMag - S[i] + size) * (- distMag + S[i] + size) * (distMag + S[i] + size);
 			
 			A += (UnitVector * restitution * 0.05 * overlap) / mass;
-		}*/
+		}
 		
 		//Collision friction
 		if (distMag < (size + S[i]) && distMag >= 1.0f)

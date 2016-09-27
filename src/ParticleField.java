@@ -52,7 +52,7 @@ public class ParticleField
 		
 		LinkedList<Particle> partsToAdd = new LinkedList<Particle>();
 		
-		//partsToAdd.add(new Particle(0 - 100, 300, 1.0f, 0, 50.0f, 40,0,0,false,200,200,200));
+		partsToAdd.add(new Particle(0 - 100, 300, 1.0f, 0, 10.0f, 40,0,0,false,200,200,200));
 		//partsToAdd.add(new Particle(0 -1300, 300, 0.5f, 0, 1.0f, 10,0,0,false,200,200,200));
 		//partsToAdd.add(new Particle(1300 + 1000, 300, -0.5f, 0, 1.0f, 10,0,0,false,200,200,200));
 				
