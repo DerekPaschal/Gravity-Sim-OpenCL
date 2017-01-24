@@ -1,43 +1,31 @@
- kernel void Test(global const float *X, global const float *Y,
-					global const float *Xv, global const float *Yv,
-					global float *Xa, global float *Ya,
-					global const float *M, global const float *S)
+ kernel void Test(global const float *X, global const float *Y, global const float *Z,
+					global float *Xa, global float *Ya, global float *Za,
+					global const float *M)
 {
 	
 	int gid = get_global_id(0);
 	int n = get_global_size(0);
 	
-	float size = S[gid];
-	float mass = M[gid];
+	float3 Acc = {0.0f,0.0f,0.0f};
+	float3 Pos = {X[gid], Y[gid], Z[gid]};
 	
-	float2 A = {0.0f,0.0f};
-	float2 P = {X[gid], Y[gid]};
-	
-	float2 PN;
-	float2 dist;
+	float3 Pos2;
+	float3 dist;
 	float distMag;
-	float VectorG;
-	
-	float2 UnitVector;
-	float VelAlongNorm;
-	float restitution;
-	float overlap;
 	
 	for (int i = 0; i < n; i++)
 	{		
-		PN = (float2){X[i], Y[i]};
+		Pos2 = (float3){X[i], Y[i], Z[i]};
 	
-		dist = PN - P;
+		dist = Pos2 - Pos;
 	
-		distMag = sqrt((dist.x*dist.x)  + (dist.y*dist.y));
+		distMag = (sqrt((dist.x*dist.x)  + (dist.y*dist.y) + (dist.z*dist.z))) +0.00001;
 		
 		//Gravity
-		if (distMag >= (size + S[i]))
-		{
-			VectorG = M[i] / (distMag * distMag * distMag);
-			A += VectorG * dist;
-		}
+	
+		Acc += M[i] * (dist / distMag) * (((distMag>2.236f)*(1.0f/(distMag*distMag))));// + ((distMag<=2.236f)*(-(0.2f*(distMag*distMag))+0.4f)));
 		
+		/*
 		//Repulsion Collision
 		if (distMag >= 1.0f && distMag <= (size + S[i]))
 		{
@@ -58,13 +46,9 @@
 			
 			A += (UnitVector * restitution * 0.05 * overlap) / mass;
 		}
-		
-		//Collision friction
-		if (distMag < (size + S[i]) && distMag >= 1.0f)
-		{
-			
-		}
+		*/
 	}
-	Xa[gid] = A.x;
-	Ya[gid] = A.y;
+	Xa[gid] = Acc.x;
+	Ya[gid] = Acc.y;
+	Za[gid] = Acc.z;
 };
