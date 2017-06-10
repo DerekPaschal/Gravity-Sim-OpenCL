@@ -20,22 +20,28 @@ public class ParticleField
 		String programsource = new String(Files.readAllBytes(Paths.get("kernels/Test2.cl")), StandardCharsets.UTF_8);
 		openCLControl = new OpenCLControl("Test",programsource,new Object[] {ParticleArrays.X,ParticleArrays.Y,ParticleArrays.Z,ParticleArrays.accX,ParticleArrays.accY,ParticleArrays.accZ,ParticleArrays.Mass}, new Object[]{ParticleArrays.accX, ParticleArrays.accY, ParticleArrays.accZ},ParticleArrays.n);
 		OpenCLDevice device = null;
-		for(OpenCLDevice tempdevice : openCLControl.getOpenCLDevices())
+		for(int i = 0; i < openCLControl.getOpenCLDevices().length; i++)
 		{
-			if (device == null)
+			OpenCLDevice tempdevice = openCLControl.getOpenCLDevices()[i];
+
+			if (tempdevice != null)
+				System.out.println(tempdevice.getPlatformName());
+			
+			/*if (device == null)
 			{
 				device = tempdevice;
 				continue;
-			}
+			}*/
 			if (tempdevice != null && tempdevice.getDeviceType() == DeviceType.GPU)
 			{
 				device = tempdevice;
 				continue;
 			}
+			
+			
 		}
 		openCLControl.setOpenCLDevice(device);
 		
-		//ParticleField.kernel = openCLControl.CreateOpenCLKernel(programsource,"Test");
 	}
 	
 	

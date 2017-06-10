@@ -54,6 +54,8 @@ public class Main {
 		
 		float duration = (float)((int)((benchEndTime - benchStartTime)/(1e8f))/10.0);
 		
+		System.out.println(ParticleField.openCLControl.getCurrentDevice().getDeviceName());
+		
 		System.out.println("Duration of Simulation: \t\t" + duration + " S");
 
 		System.out.println("Simulated Seconds per Second: \t\t" + (Math.round(SecsToSim*10.0/duration)/10.0));
